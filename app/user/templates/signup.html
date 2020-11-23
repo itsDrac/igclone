@@ -1,0 +1,40 @@
+{% from 'macros/form.html' import render_form %}
+{% extends 'layout.html' %}
+
+{% block body %}        
+<section class="hero is-fullheight is-justify-content-center">
+  <div class="box column is-one-third is-offset-one-third">
+    <h5 class="title has-text-centered">Instagrame-clone</h5>
+    <p class="subtitle has-text-centered">Sign up to give us your data. <br>
+    And since we have merged with facebook we'll probably <strong>leak it</strong></p>
+    <form action="" method="post">
+      {{ form.hidden_tag() }}
+      <div class="field my-2">
+        <p class="control has-icons-left has-icons-right">
+        {{ render_form(form.email, class_='input', placeholder='E-mail') }}
+        <span class="icon is-small is-left">
+          <i class="fas fa-envelope"></i>
+        </span>
+        </p>
+      </div>
+      <div class="control my-2">
+        {{ render_form(form.name, class_='input', placeholder='Full Name') }}
+      </div>  
+      <div class="control my-2">
+        {{ render_form(form.username, class_='input', placeholder='UserName') }}
+      </div>  
+      <div class="field my-2">
+        <p class="control has-icons-left">
+        {{ render_form(form.password, class_='input', placeholder='Password') }}
+        <span class="icon is-small is-left">
+          <i class="fas fa-lock"></i>
+        </span>
+        </p>
+      </div>
+      <div class="control my-2">
+        {{ render_form(form.submit, class_='button is-link is-fullwidth is-medium') }}
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock body %}

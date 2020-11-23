@@ -1,0 +1,11 @@
+{% macro render_form(field) %}
+    {{ field(**kwargs) }}
+    {% if field.errors %}
+        {% for error in field.errors %}
+            <div class="notification is-danger my-2">
+                  <button class="delete"></button>
+                  {{ error }}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endmacro %}
