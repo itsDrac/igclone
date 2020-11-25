@@ -20,3 +20,13 @@ class SignupForm(FlaskForm):
             user = User.query.filter_by(username=username.data).first()
             if user:
                 raise ValidationError('This Username Is Already Taken')
+
+class LoginForm(FlaskForm):
+        email = EmailField('E-mail', validators=[DataRequired(), Email()])
+        password = PasswordField('Password', validators=[DataRequired()])
+        submit = SubmitField('Log In')
+
+        def validate_email(self, email):
+            email = User.query.filter_by(email=email.data).first()
+            if not email:
+                raise ValidationError('Account with This e-mail doesn\'t exist')

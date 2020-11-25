@@ -1,0 +1,43 @@
+{% from 'macros/form.html' import render_form %}
+{% extends 'layout.html' %}
+
+{% block body %}        
+<section class="hero is-fullheight is-justify-content-center">
+  <div class="columns is-justify-content-center is-align-items-center">
+    <div class="column is-one-quarter">
+      <img class="is-4by5" src="https://source.unsplash.com/400x600/?mobile" alt="">
+    </div>
+    <div class="column is-one-quarter">
+      <div class="box p-6">
+        <h1 class="title has-text-centered">Login</h1>
+        <p class="subtitle has-text-centered">To Instagrame-Clone</p>
+        <form action="" method="post">
+          {{ form.hidden_tag() }}
+          <div class="field my-3">
+            <p class="control has-icons-left has-icons-right">
+            {{ render_form(form.email, class_='input', placeholder='E-mail') }}
+            <span class="icon is-small is-left">
+              <i class="fas fa-envelope"></i>
+            </span>
+            </p>
+          </div>
+          <div class="field my-3">
+            <p class="control has-icons-left">
+            {{ render_form(form.password, class_='input', placeholder='Password') }}
+            <span class="icon is-small is-left">
+              <i class="fas fa-lock"></i>
+            </span>
+            </p>
+          </div>
+          <div class="control my-3">
+            {{ render_form(form.submit, class_='button is-link is-fullwidth is-medium') }}
+          </div>
+        </form>
+      </div>
+      <div class="box my-2">
+        <p class="is-size-6 has-text-centered">Don't have an account? <a href="{{ url_for('user.signup') }}">Sign Up</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock body %}
