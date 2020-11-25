@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+
+{% block body %}        
+<div class="box">
+    <h1 class="title has-text-centered">Password Reset Request</h1>
+    <p class="subtitle has-text-centered">
+        Hi! We have recived an request to reset your Instagrame-Clone Password. <br>
+        if you haven't issued this request ignore this email
+    </p>
+    <h5 class="mt-5">click on this button to reset your Password</h5>
+    <a class="my3 button is-info" href="{{ url_for('user.reset_request', token=token, _external=True) }}">Reset Password</a>
+</div>
+{% endblock body %}

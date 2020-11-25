@@ -1,0 +1,22 @@
+{% from 'macros/form.html' import render_form %}
+{% extends 'layout.html' %}
+
+{% block body %}        
+<section class="hero is-fullheight is-justify-content-center">
+  <div class="columns is-justify-content-center is-align-items-center">
+    <div class="column box is-one-third p-4">
+      <h1 class="title has-text-centered">
+        Reset Password
+      </h1>
+      <p class="subtitle has-text-centered">
+      An E-mail will be send to user's e-mail address
+      </p>
+      <form action="" method="post">
+        {{ form.hidden_tag() }}
+        {{ render_form(form.username, class_='input', placeholder="Username") }}
+        {{ render_form(form.submit, class_='my-3 button is-warning is-outlined is-fullwidth is-medium') }}
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock body %}

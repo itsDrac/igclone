@@ -37,6 +37,11 @@
       <div class="box my-2">
         <p class="is-size-6 has-text-centered">Don't have an account? <a href="{{ url_for('user.signup') }}">Sign Up</a></p>
       </div>
+      <div class="box my-2">
+        <p class="is-size-6 has-text-centered">Or, did you forget your password? <br>
+          <a href="{{ url_for('user.reset') }}" class="has-text-danger">Reset Password</a>
+        </p>
+      </div>
     </div>
   </div>
 </section>
