@@ -4,7 +4,7 @@ from app.user.models import User
 from app.user.forms import SignupForm, LoginForm, ResetForm, PasswordResetForm
 from app.helper.mail import send_email
 from flask import render_template, redirect, url_for
-from flask_login import login_user, logout_user, current_user
+from flask_login import login_user, logout_user, current_user, login_required
 
 @user.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -36,6 +36,31 @@ def logout():
     logout_user()
     return redirect(url_for('user.login')) 
 
+@user.route('/confirm')
+@login_required
+def confirm():
+    if current_user.is_confirmed:
+        return 'you are already confirmed'
+    token = current_user.get_serializer_token(salt='e-mail confirmation')
+    send_email(subject = 'e-mail confirmation',
+               to = current_user.email,
+               text_body = 'if you are getting this it means you are unable to see html page please contact admin',
+               template = 'confirm',
+               token = token)
+    return '<h1>An confirmation mail has been send to e-mail. Check your inbox</h1>'
+
+@user.route('/confirm/<token>')
+@login_required
+def confirmation(token):
+    if current_user.is_confirmed:
+        return 'you are already confirmed'
+    user = User.verify_serializer_token(token, salt='e-mail confirmation')
+    if user:
+        user.is_confirmed = True
+        db.session.commit()
+        return 'user confirmed'
+    return "<h1>There has been some issue please try again</h1>"
+
 @user.route('/reset', methods=['GET', 'POST'])
 def reset():
     if current_user.is_authenticated:
@@ -44,7 +69,7 @@ def reset():
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first_or_404()
         if user :
-            token = user.get_reset_token()
+            token = user.get_serializer_token(salt='password reset')
             send_email(subject = 'password reset',
                        to = user.email,
                        text_body = 'if you are getting this it means you are unable to see html page please contact admin',
@@ -58,7 +83,7 @@ def reset_request(token):
     if current_user.is_authenticated:
         return 'you need to logout to access this page'
     form = PasswordResetForm()
-    user = User.verify_reset_token(token)
+    user = User.verify_serializer_token(token, salt='password reset')
     if user:
         if form.validate_on_submit():
             user.set_password(form.password.data)

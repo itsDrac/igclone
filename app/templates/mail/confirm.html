@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+
+{% block body %}        
+<div class="box">
+    <h1 class="title has-text-centered">Password Reset Request</h1>
+    <p class="subtitle has-text-centered">
+        Hi! This is an email for confirmation of your instagrame login account. <br>
+        if This isn't you, then you can simply ignore this e-mail
+    </p>
+    <h5 class="mt-5">click bellow to confirm your email</h5>
+    <a class="my3 button is-info" href="{{ url_for('user.confirmation', token=token, _external=True) }}">Confirm Your E-Mail</a>
+</div>
+{% endblock body %}
