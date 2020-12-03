@@ -1,0 +1,52 @@
+{% from 'macros/form.html' import render_form %}
+{% extends 'layout.html' %}
+
+{% block body %}        
+<section class="hero has-background-light">
+        <div class="box">
+                <div class="container is-max-widescreen">
+                        <nav class="level">
+                                <!-- Left side -->
+                                <div class="level-left">
+                                        <div class="level-item mr-6">
+                                                <a href="{{ url_for('main.home') }}">
+                                                        <h1 class="title">Instagram Clone</h1>
+                                                </a>
+                                        </div>
+                                        <div class="level-item ml-6">
+                                                <div class="field has-addons">
+                                                        <p class="control">
+                                                        <input class="input" type="text" placeholder="Find a post">
+                                                        </p>
+                                                        <p class="control">
+                                                        <button class="button">
+                                                                Search
+                                                        </button>
+                                                        </p>
+                                                </div>
+                                        </div>
+                                </div>
+
+                                <!-- Right side -->
+                                <div class="level-right">
+                                        <p class="level-item"><i class="fas fa-home has-text-link"></i></p>
+                                </div>
+                        </nav>
+                </div>
+        </div>
+        <div class="columns">
+                <div class="column">
+                        <div class="container is-max-widescreen">
+                                <div class="columns">
+                                        <div class="column is-two-thirds">
+                                                <button class="button is-medium is-fullwidth is-danger is-outlined">Medium</button>
+                                        </div>
+                                        <div class="column">
+                                                <button class="button is-medium is-fullwidth is-success is-outlined">1/4</button>
+                                        </div>
+                                </div>
+                        </div>
+                </div>
+        </div>
+</section>
+{% endblock body %}

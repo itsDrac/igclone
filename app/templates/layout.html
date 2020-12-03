@@ -10,8 +10,13 @@
                           <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
                       {% endblock style %}
         </head>
+
         <body>
                 {% block body%} {% endblock body %}
         </body>
+
+        {% block script %}
+            <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+        {% endblock script %}
 </html>
 
