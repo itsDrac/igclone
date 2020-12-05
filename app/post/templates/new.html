@@ -1,0 +1,26 @@
+{% from 'macros/form.html' import render_form %}
+{% extends 'layout.html' %}
+
+{% block style %}
+{{ super() }}
+        {{ dropzone.load_css() }}
+        {{ dropzone.style('border: 2px dashed #515BD4; margin: 10px 0 10px; min-height: 200px; width: 500px') }}
+{% endblock style %}
+
+{% block body %}        
+<div class="container is-max-widescreen">
+        <h1 class="title">New Post Page</h1>
+        <form action="{{ url_for('post.new') }}" enctype="multipart/form-data" method="post">
+                {{ form.hidden_tag() }}
+                {{ dropzone.create() }}
+            {{ render_form(form.caption, class_='input my-2', placeholder='Caption....') }}
+            {{ render_form(form.submit, class_='button is-success is-fullwidth') }}
+        </form>
+</div>
+{% endblock body %}
+
+{% block script %}
+{{ super() }}
+        {{ dropzone.load_js() }}
+        {{ dropzone.config() }}
+{% endblock script %}
