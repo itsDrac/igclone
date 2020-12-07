@@ -1,8 +1,14 @@
 {% from 'macros/form.html' import render_form %}
 {% extends 'layout.html' %}
 
+{% block style %}
+{{ super() }}
+        <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+        <link rel="stylesheet" href="{{ url_for('main.static', filename='css/swiper.css') }}">
+{% endblock style %}
+
 {% block body %}        
-<section class="hero has-background-light">
+<section class="has-background-light">
         <div class="box">
                 <div class="container is-max-widescreen">
                         <nav class="level">
@@ -39,19 +45,45 @@
                         </nav>
                 </div>
         </div>
-        <div class="columns">
-                <div class="column">
-                        <div class="container is-max-widescreen">
-                                <div class="columns">
-                                        <div class="column is-two-thirds">
-                                                <button class="button is-medium is-fullwidth is-danger is-outlined">Medium</button>
+        <div class="container is-max-widescreen">
+                <div class="columns">
+                        <div class="column is-three-quarters">
+                                <button class="button is-danger is-outlined is-medium is-fullwidth">Medium</button>
+                                {% for post in posts %}
+                                <div class="box my-2">
+                                        <div class="swiper-container">
+                                                <div class="swiper-wrapper">
+                                                        {% for image in post.images.all() %}
+                                                        <div class="swiper-slide swiper-zoom-container">
+                                                                <!-- Required swiper-lazy class and image source specified in data-src attribute -->
+                                                                <img data-src="{{ url_for('post.static', filename='images/'+image.name ) }}" class="swiper-lazy">
+                                                                <!-- Preloader image -->
+                                                                <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
+                                                        </div>
+                                                        {% endfor %}
+                                                </div>
+                                                <!-- Add Pagination -->
+                                                <div class="swiper-pagination"></div>
+                                                <!-- Navigation -->
+                                                <div class="swiper-button-next"></div>
+                                                <div class="swiper-button-prev"></div>
                                         </div>
-                                        <div class="column">
-                                                <button class="button is-medium is-fullwidth is-success is-outlined">1/4</button>
-                                        </div>
+                                        <button class="button m-2 {% if current_user not in post.user_liked %}is-dark{% else %}is-danger{% endif %} is-inverted" onclick="like_unlike({{ post.id }}, this)"><i class="fas fa-heart fa-2x"></i></button>
+                                        <p class="subtitle">{{ post.caption }}</p>
                                 </div>
+                                {% endfor %}
+                        </div>
+                        <div class="column is-one-quarter">
+                                <button class="button is-warning is-outlined is-medium is-fullwidth">Medium</button>
                         </div>
                 </div>
         </div>
 </section>
 {% endblock body %}
+
+{% block script %}
+{{ super() }}
+        <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+        <script src="{{ url_for('main.static', filename='js/swiper.js') }}"></script>
+        <script src="{{ url_for('main.static', filename='js/script.js') }}"></script>
+{% endblock script %}
