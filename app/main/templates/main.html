@@ -1,0 +1,11 @@
+{% from 'macros/form.html' import render_form %}
+{% extends 'layout.html' %}
+
+{% block body %}        
+<section class="has-background-light">
+        {% include "include/navbar.html" ignore missing %}
+{% block main %}        
+{% endblock main %}
+</section>
+{% endblock body %}
+

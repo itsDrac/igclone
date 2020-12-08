@@ -7,7 +7,7 @@ def save_picture(form_picture, folder):
     picture_fn = random_hex + f_ext
     picture_path = os.path.join(folder, picture_fn)
 
-    output_size = (600, 600)
+    output_size = (720, 720)
     img = Image.open(form_picture)
     img.thumbnail(output_size)
 
