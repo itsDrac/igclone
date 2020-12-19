@@ -12,10 +12,10 @@
                         <div class="box my-2">
                                 <div class="swiper-container">
                                         <div class="swiper-wrapper">
-                                                {% for image in post.images.all() %}
+                                                {% for image in post.get_images() %}
                                                 <div class="swiper-slide swiper-zoom-container">
                                                         <!-- Required swiper-lazy class and image source specified in data-src attribute -->
-                                                        <img data-src="{{ url_for('post.static', filename='images/'+image.name ) }}" class="swiper-lazy">
+                                                        <img data-src="{{ url_for('post.static', filename='images/'+image) }}" class="swiper-lazy">
                                                         <!-- Preloader image -->
                                                         <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
                                                 </div>

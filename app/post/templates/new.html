@@ -18,6 +18,7 @@
                                 {{ render_form(form.caption, class_='input is-rounded is-success', placeholder='Caption....') }}
                         </div>
                         <div class="column">
+                                {{ render_form(form.images, id='images') }}
                                 {{ render_form(form.submit, class_='button is-success px-6') }}
                         </div>
                 </div>
@@ -28,5 +29,11 @@
 {% block script %}
 {{ super() }}
         {{ dropzone.load_js() }}
-        {{ dropzone.config() }}
+        {{ dropzone.config(custom_options="success: function(file, response){add_images(response)}") }}
+<script>
+        const add_images = (response) => {
+                        field = document.querySelector('#images')
+                        field.value = response.images
+                }
+</script>
 {% endblock script %}
