@@ -13,6 +13,7 @@ class User(db.Model, UserMixin):
         id = db.Column(db.Integer, primary_key=True)
         name = db.Column(db.String(50), nullable=False)
         username = db.Column(db.String(80), unique=True, nullable=False)
+        avatar = db.Column(db.String(120), nullable = False, default = 'default.svg')
         email = db.Column(db.String(120), unique=True, nullable=False)
         password = db.Column(db.String(200), unique=True, nullable=False)
         is_confirmed = db.Column(db.Boolean, default=False)

@@ -1,10 +1,41 @@
+import os
 from app.extinsions import db
 from app.user import user
 from app.user.models import User
-from app.user.forms import SignupForm, LoginForm, ResetForm, PasswordResetForm
+from app.user.forms import SignupForm, LoginForm, ResetForm, PasswordResetForm, SettingForm
 from app.helper.mail import send_email
+from app.helper.pics import save_picture
 from flask import render_template, redirect, url_for
 from flask_login import login_user, logout_user, current_user, login_required
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+
+@user.route('/<username>')
+def home(username):
+    if not current_user.is_authenticated:
+        return redirect(url_for('main.home'))
+    user=User.query.filter_by(username = username).first()
+    return render_template('user.html', user=user)
+
+@user.route('/setting', methods=['GET', 'POST'])
+def setting():
+    if not current_user.is_authenticated and not current_user.is_confirmed:
+        return redirect(url_for('main.home'))
+    form = SettingForm()
+    if form.validate_on_submit():
+        current_user.name = form.name.data
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        if form.avatar.data :
+             f=form.avatar.data
+             name = save_picture(f, os.path.join(basedir, 'static/images'))
+             current_user.avatar = name
+        db.session.commit()
+        return redirect(url_for('user.home', username=current_user.username))
+    form.username.data = current_user.username
+    form.name.data = current_user.name
+    form.email.data = current_user.email
+    return render_template('setting.html', form=form)
 
 @user.route('/signup', methods=['GET', 'POST'])
 def signup():

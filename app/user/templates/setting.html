@@ -1,0 +1,73 @@
+{% extends 'main.html' %}
+{% block main %}        
+<div class="container is-max-desktop">
+  <form action="" enctype="multipart/form-data" method="post" class="box">
+  {{ form.hidden_tag() }}
+  <div class="columns">
+    <div class="column is-align-self-center is-two-fifths">
+
+      <div class="field">
+        <div class="file is-medium is-centered is-boxed is-info has-name">
+          <label class="file-label">
+            {{ render_form(form.avatar, class_='file-input') }}
+            <span class="file-cta">
+              <span class="file-icon">
+                <i class="fas fa-upload"></i>
+              </span>
+              <span class="file-label">
+                Upload Profile Image
+              </span>
+            </span>
+            <span class="file-name has-text-centered">
+              No Profile Uploaded Yet!
+            </span>
+          </label>
+        </div>
+      </div>
+
+    </div>
+    <div class="column">
+      <div class="field">
+        <h5 class="title">
+          Username
+        </h5>
+        <div class="control">
+          {{ render_form(form.username, class_="input is-primary") }}
+        </div>
+      </div><div class="field">
+        <h5 class="title">
+          Name
+        </h5>
+        <div class="control">
+          {{ render_form(form.name, class_="input is-primary") }}
+        </div>
+      </div>
+      <div class="field">
+        <h5 class="title">
+          E-mail
+        </h5>
+        <div class="control">
+          {{ render_form(form.email, class_="input is-primary") }}
+        </div>
+      </div>
+
+      <p class=" is-size-7 has-text-weight-semibold is-italic"> change password? just logout and do forget password it will change your password</p>
+    </div>
+  </div>
+  {{ render_form(form.submit, class_='button is-success is-medium is-fullwidth') }}
+
+  </form>
+</div>
+{% endblock main %}
+
+{% block script %}
+    <script>
+        const fileInput = document.querySelector('.file input[type=file]');
+                fileInput.onchange = () => {
+                            if (fileInput.files.length > 0) {
+                                          const fileName = document.querySelector('.file .file-name');
+                                          fileName.textContent = fileInput.files[0].name;
+                                        }
+                          }
+    </script>
+{% endblock script %}

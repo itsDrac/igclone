@@ -25,12 +25,15 @@
 
                         <!-- Right side -->
                         <div class="level-right">
-                            <a href="{{ url_for('main.home') }}" class="mx-4{% if request.endpoint.endswith('main.home') %}has-text-link-dark{% else %} has-text-grey-darker{% endif %}">
+                            <a href="{{ url_for('main.home') }}" class="mx-2{% if request.endpoint.endswith('main.home') %} has-text-link-dark{% else %} has-text-grey-darker{% endif %}">
                                     <p class="level-item"><i class="fas fa-home"></i></p>
-                                </a>
-                                <a href="{{ url_for('post.new') }}" class="mx-4{% if request.endpoint.endswith('post.new') %}has-text-link-dark{% else %} has-text-grey-darker{% endif %}">
+                            </a>
+                            <a href="{{ url_for('post.new') }}" class="mx-2{% if request.endpoint.endswith('post.new') %} has-text-link-dark{% else %} has-text-grey-darker{% endif %}">
                                         <p class="level-item"><i class="fas fa-plus-circle"></i></p>
-                                </a>
+                            </a>
+                            <a href="{{ url_for('user.home', username=current_user.username) }}" class="mx-2{% if request.endpoint.endswith('user.home') %} has-text-link-dark{% else %} has-text-grey-darker{% endif %}">
+                                    <p class="level-item"><i class="fas fa-user-circle"></i></p>
+                            </a>
                         </div>
                 </nav>
         </div>

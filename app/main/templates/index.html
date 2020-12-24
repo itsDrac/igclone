@@ -34,7 +34,16 @@
                 </div>
                 <div class="column is-one-quarter">
                         <div class="box">
-                                <p class="subtitle">{{ current_user.username }}</p>
+                                <div class="columns">
+                                        <div class="column is-one-third">
+                                                <figure class="image is-64x64 py-2">
+                                                        <image class="is-rounded" src="{{ url_for('user.static', filename='images/'+current_user.avatar) }}">
+                                                </figure>
+                                        </div>
+                                        <div class="column">
+                                                <h1 class="title">{{ current_user.username }}</h1>
+                                        </div>
+                                </div>
                         </div>
                 </div>
         </div>

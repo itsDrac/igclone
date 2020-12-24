@@ -1,0 +1,72 @@
+{% extends 'main.html' %}
+{% block main %}        
+<div class="container is-fullhd has-background-white p-2">
+  <div class="columns">
+
+    <div class="column is-one-quarter image">
+      <img class="is-rounded is-1by1" src="{{ url_for('user.static', filename='images/'+current_user.avatar) }}">
+    </div>
+    <div class="column is-align-self-center is-one-quarter">
+      <h3 class="title has-text-centered">256</h3>
+      <h5 class="subtitle has-text-centered">Followers</h5>
+    </div>
+    <div class="column is-align-self-center is-one-quarter">
+      <h3 class="title has-text-centered">300</h3>
+      <h5 class="subtitle has-text-centered">Following</h5>
+    </div>
+    {% if current_user == user %}
+    <div class="column is-align-self-center px-6">
+      <a href="{{ url_for('user.setting') }}" class="has-text-dark">
+        <i class="fas fa-cog fa-2x"></i>
+      </a>
+    </div>
+    {% endif %}
+
+  </div>
+  <div class="columns px-4">
+    <div class="column">
+      <h6 class="title">
+        {{ user.username }}
+      </h6>
+      <h6 class="subtitle">
+        {{ user.name }}
+      </h6>
+      <p class="subtitle">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus, dolorem.
+      </p>
+    </div>
+  </div>
+  <div class="tabs is-centered is-boxed is-large">
+    <ul>
+      <li class="is-active">
+        <a>
+          <i class="far fa-images"></i>
+          <span class="mx-2">Posts</span> 
+        </a>
+      </li>
+      <li>
+        <a>
+          <i class="far fa-heart"></i>
+          <span class="mx-2">Likes</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="columns" id="posts">
+    {% for post in user.posts.all() %}
+    <div class="column is-one-third image">
+      <img src="{{ url_for('post.static', 
+      filename='images/'+post.get_images()[0]) }}">
+    </div>
+    {% endfor %}
+  </div>
+  <div class="columns" id="likes">
+    {% for post in user.posts_liked.all() %}
+    <div class="column is-one-third image">
+      <img src="{{ url_for('post.static', 
+      filename='images/'+post.get_images()[0]) }}">
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock main %}
