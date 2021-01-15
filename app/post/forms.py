@@ -7,3 +7,6 @@ class PostForm(FlaskForm):
     images = HiddenField('images', validators=[DataRequired('You must Upload Atleast one image')])
     submit = SubmitField('Add Post')
 
+class CommentForm(FlaskForm):
+    body = StringField('Comment')
+    submit = SubmitField('Comment')

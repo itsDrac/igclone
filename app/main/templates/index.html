@@ -1,3 +1,4 @@
+{% from 'macros/post.html' import render_post with context %}
 {% extends 'main.html' %}
 {% block style %}
 {{ super() }}
@@ -9,27 +10,7 @@
         <div class="columns">
                 <div class="column is-three-quarters">
                         {% for post in posts %}
-                        <div class="box my-2">
-                                <div class="swiper-container">
-                                        <div class="swiper-wrapper">
-                                                {% for image in post.get_images() %}
-                                                <div class="swiper-slide swiper-zoom-container">
-                                                        <!-- Required swiper-lazy class and image source specified in data-src attribute -->
-                                                        <img data-src="{{ url_for('post.static', filename='images/'+image) }}" class="swiper-lazy">
-                                                        <!-- Preloader image -->
-                                                        <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
-                                                </div>
-                                                {% endfor %}
-                                        </div>
-                                        <!-- Add Pagination -->
-                                        <div class="swiper-pagination"></div>
-                                        <!-- Navigation -->
-                                        <div class="swiper-button-next"></div>
-                                        <div class="swiper-button-prev"></div>
-                                </div>
-                                <button class="button m-2 {% if current_user not in post.user_liked %}is-dark{% else %}is-danger{% endif %} is-inverted" onclick="like_unlike({{ post.id }}, this)"><i class="fas fa-heart fa-2x"></i></button>
-                                <p class="subtitle">{{ post.caption }}</p>
-                        </div>
+                        {{ render_post(post) }}
                         {% endfor %}
                 </div>
                 <div class="column is-one-quarter">

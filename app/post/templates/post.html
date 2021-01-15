@@ -1,0 +1,18 @@
+{% from 'macros/post.html' import render_post with context %}
+{% extends 'main.html' %}
+{% block style %}
+{{ super() }}
+        <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+        <link rel="stylesheet" href="{{ url_for('main.static', filename='css/swiper.css') }}">
+{% endblock style %}
+{% block main %}        
+<div class="container is-max-desktop">
+  {{ render_post(post, comments = post.comments.all() ) }}
+</div>
+{% endblock main %}
+{% block script %}
+{{ super() }}
+        <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+        <script src="{{ url_for('main.static', filename='js/swiper.js') }}"></script>
+        <script src="{{ url_for('main.static', filename='js/script.js') }}"></script>
+{% endblock script %}

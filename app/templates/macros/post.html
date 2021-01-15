@@ -1,0 +1,89 @@
+{% from 'macros/form.html' import render_form %}
+{% macro render_post(post, comments = None) %}
+<div class="box my-2">
+        <div class="swiper-container">
+                <div class="swiper-wrapper">
+                        {% for image in post.get_images() %}
+                        <div class="swiper-slide swiper-zoom-container">
+                                <!-- Required swiper-lazy class and image source specified in data-src attribute -->
+                                <img data-src="{{ url_for('post.static', filename='images/'+image) }}" class="swiper-lazy">
+                                <!-- Preloader image -->
+                                <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
+                        </div>
+                        {% endfor %}
+                </div>
+                <!-- Add Pagination -->
+                <div class="swiper-pagination"></div>
+                <!-- Navigation -->
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+        </div>
+        <p class="subtitle">{{ post.caption }}</p>
+        {% set comment = post.comments.filter_by(user_id = current_user.id).first() %}
+        {% if current_user.is_authenticated %}
+        <button class="button m-2 {% if current_user not in post.user_liked %}is-dark{% else %}is-danger{% endif %} is-inverted" onclick="like_unlike({{ post.id }}, this)"><i class="fas fa-heart fa-2x"></i></button>
+        <article class="media has-background-white-ter p-2">
+                <figure class="media-left">
+                        <p class="image is-64x64">
+                        <img class="is-rounded" src="{{ url_for('user.static', filename='images/'+current_user.avatar) }}">
+                        </p>
+                </figure>
+                <div class="media-content">
+                        <div class="content">
+                                <p>
+                                <strong>{{ current_user.username}}</strong>
+                                <br>
+                                </p>
+                        </div>
+                        {% if comment %}
+                        <p class="subtitle is-size-5">
+                                {{ comment.body }}
+                        </p>
+                        {% else %}
+                        <form action="{{ url_for('post.home', post_id=post.id) }}" method="post">
+                                {{ form.hidden_tag() }}
+                                <div class="field">
+                                        <p class="control">
+                                        {{ render_form(form.body, class_="input", id="comment {{ post.id }}", placeholder="Add a comment...") }}
+                                        </p>
+                                </div>
+                                <nav class="level">
+                                        <div class="level-left">
+                                                <div class="level-item">
+                                                        {{ render_form(form.submit, class_="button is-info") }}
+                                                </div>
+                                        </div>
+                                </nav>
+                        </form>
+                        {% endif %}
+                </div>
+        </article>
+        {% if comments %}
+        <h5 class="title mt-4">All comments</h5>
+        {% for comment in comments %}
+        <article class="media has-background-white-ter p-2 my-2">
+                <figure class="media-left">
+                        <p class="image is-64x64">
+                        <img class="is-rounded" src="{{ url_for('user.static', filename='images/'+comment.user.avatar) }}">
+                        </p>
+                </figure>
+                <div class="media-content">
+                        <div class="content">
+                                <p>
+                                <strong>{{ comment.user.username }}</strong>
+                                <br>
+                                </p>
+                        </div>
+                        <p class="subtitle is-size-5">
+                        {{ comment.body }}
+                        </p>
+                </div>
+        </article>
+        {% endfor %}
+        {% endif %}
+        {% endif %}
+        <a href="{{url_for('post.home', post_id=post.id) }}" class="mt-4">
+                <p class="has-text-info my-4">Show all comments</p>
+        </a>
+</div>
+{% endmacro %}
