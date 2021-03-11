@@ -9,6 +9,10 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 def load_user(user_id):
         return User.query.get(int(user_id))
 
+class Follow(db.Model):
+    followed_id = db.Column('followed_id', db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    follower_id = db.Column('follower_id', db.Integer, db.ForeignKey('user.id'), primary_key=True)
+
 class User(db.Model, UserMixin):
         id = db.Column(db.Integer, primary_key=True)
         name = db.Column(db.String(50), nullable=False)
@@ -20,6 +24,12 @@ class User(db.Model, UserMixin):
         posts = db.relationship('Post', backref='user', lazy='dynamic')
         comments = db.relationship('Comment', backref='user', lazy='dynamic')
         posts_liked = db.relationship('Post', secondary=likes, backref='user_liked', lazy='dynamic')
+        followed = db.relationship('Follow', foreign_keys=[Follow.follower_id],
+                                   backref=db.backref('follower', lazy='joined'),
+                                   lazy='dynamic', cascade='all, delete-orphan')
+        followers = db.relationship('Follow', foreign_keys=[Follow.followed_id],
+                                   backref=db.backref('followed', lazy='joined'),
+                                   lazy='dynamic', cascade='all, delete-orphan')
 
         def set_password(self, password):
             self.password = generate_password_hash(password)
@@ -39,3 +49,28 @@ class User(db.Model, UserMixin):
             except:
              return None
             return User.query.get(user_id)
+
+        def is_following(self, user):
+            return self.followed.filter_by(followed_id=user.id).first() is not None
+
+        def is_followed_by(self, user):
+            return self.followers.filter_by(follower_id=user_id).first() is not None
+
+        def follow(self, user):
+            if not self.is_following(user):
+                f = Follow(follower=self, followed=user)
+                db.session.add(f)
+
+        def unfollow(self, user):
+            f = self.followed.filter_by(followed_id=user.id).first()
+            if f :
+                db.session.delete(f)
+
+        @property
+        def self_follow(self):
+            self.follow(self)
+
+        @property
+        def followed_posts(self):
+            return Post.query.join(Follow, Follow.followed_id == Post.user_id)\
+                    .filter(Follow.follower_id == self.id)

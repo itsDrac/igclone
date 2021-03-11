@@ -7,11 +7,11 @@
       <img class="is-rounded is-1by1" src="{{ url_for('user.static', filename='images/'+current_user.avatar) }}">
     </div>
     <div class="column is-align-self-center is-one-quarter">
-      <h3 class="title has-text-centered">256</h3>
+      <h3 class="title has-text-centered">{{ user.followers.count() -1 }}</h3>
       <h5 class="subtitle has-text-centered">Followers</h5>
     </div>
     <div class="column is-align-self-center is-one-quarter">
-      <h3 class="title has-text-centered">300</h3>
+      <h3 class="title has-text-centered">{{ user.followed.count() -1 }}</h3>
       <h5 class="subtitle has-text-centered">Following</h5>
     </div>
     {% if current_user == user %}
@@ -20,6 +20,14 @@
         <i class="fas fa-cog fa-2x"></i>
       </a>
     </div>
+    {% else %}
+    <a href="{{ url_for('user.un_follow', username = user.username) }}" style="margin: auto 0">
+      {% if current_user.is_following(user) %}
+        <button class="button is-danger is-outlined is-rounded is-medium">Unfollow</button>
+      {% else %}
+        <button class="button is-info is-rounded is-medium">Follow</button>
+      {% endif %}
+    </a>
     {% endif %}
 
   </div>

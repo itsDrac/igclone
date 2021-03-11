@@ -17,6 +17,18 @@ def home(username):
     user=User.query.filter_by(username = username).first()
     return render_template('user.html', user=user)
 
+@user.route('un_follow/<username>')
+def un_follow(username):
+    if not current_user.is_authenticated:
+        return redirect(url_for('main.home'))
+    user=User.query.filter_by(username = username).first()
+    if current_user.is_following(user):
+        current_user.unfollow(user)
+    else :
+        current_user.follow(user)
+    db.session.commit()
+    return redirect(url_for('user.home', username = user.username))
+
 @user.route('/setting', methods=['GET', 'POST'])
 def setting():
     if not current_user.is_authenticated and not current_user.is_confirmed:
@@ -46,6 +58,7 @@ def signup():
         user = User(name=form.name.data, username=form.username.data, email = form.email.data)
         user.set_password(form.password.data)
         db.session.add(user)
+        user.self_follow
         db.session.commit()
         return redirect(url_for('user.login'))
     return render_template('signup.html', form=form)

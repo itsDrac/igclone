@@ -2,13 +2,13 @@ from app.extinsions import db
 from app.main import main
 from app.post.models import Post
 from app.post.forms import CommentForm
-from flask import render_template, request
+from flask import render_template
 from flask_login import current_user, login_required
 
 @main.route('/')
 @login_required
 def home():
-    posts = Post.query.all()
+    posts = current_user.followed_posts
     form = CommentForm()
     return render_template('index.html',posts=posts, form=form)
 

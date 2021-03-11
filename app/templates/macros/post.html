@@ -80,10 +80,11 @@
                 </div>
         </article>
         {% endfor %}
-        {% endif %}
-        {% endif %}
+        {% else %}
         <a href="{{url_for('post.home', post_id=post.id) }}" class="mt-4">
                 <p class="has-text-info my-4">Show all comments</p>
         </a>
+        {% endif %}
+        {% endif %}
 </div>
 {% endmacro %}
