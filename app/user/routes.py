@@ -29,6 +29,16 @@ def un_follow(username):
     db.session.commit()
     return redirect(url_for('user.home', username = user.username))
 
+@user.route('<username>/followers')
+def user_followers(username):
+    user = User.query.filter_by(username=username).first()
+    return render_template('show_users.html', users = user.all_followed)
+
+@user.route('<username>/followed')
+def user_followed(username):
+    user = User.query.filter_by(username=username).first()
+    return render_template('show_users.html', users = user.all_followed)
+
 @user.route('/setting', methods=['GET', 'POST'])
 def setting():
     if not current_user.is_authenticated and not current_user.is_confirmed:
@@ -60,7 +70,7 @@ def signup():
         db.session.add(user)
         user.self_follow
         db.session.commit()
-        return redirect(url_for('user.login'))
+        return redirect(url_for('user.confirm'))
     return render_template('signup.html', form=form)
 
 @user.route('/login', methods=['GET', 'POST'])

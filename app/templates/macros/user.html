@@ -1,0 +1,30 @@
+{% macro user_table(users, current_user) %}
+
+{% for user in users %}
+<div class="columns box">
+    <div class="column is-one-fifth">
+        <div class="image is-64x64" style="margin: 0 auto">
+            <img class="is-rounded is-1by1" src="{{ url_for('user.static', filename='images/'+user.avatar) }}">
+        </div>
+    </div>
+    <div class="column is-three-fifths">
+        <h6 class="title">
+            {{ user.username }}
+        </h6>
+        <h6 class="subtitle">
+            {{ user.name }}
+        </h6>
+    </div>
+    <div class="column is-one-quarter">
+        <a href="{{ url_for('user.un_follow', username = user.username) }}" style="margin: auto 0">
+            {% if current_user.is_following(user) %}
+            <button class="button is-danger is-outlined is-rounded is-medium">Unfollow</button>
+            {% else %}
+            <button class="button is-info is-rounded is-medium">Follow</button>
+            {% endif %}
+        </a>
+    </div>
+</div>
+{% endfor %}
+
+{% endmacro %}

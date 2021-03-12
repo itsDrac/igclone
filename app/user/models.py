@@ -74,3 +74,11 @@ class User(db.Model, UserMixin):
         def followed_posts(self):
             return Post.query.join(Follow, Follow.followed_id == Post.user_id)\
                     .filter(Follow.follower_id == self.id)
+
+        @property
+        def all_followed(self):
+            return [ f.followed for f in self.followed.filter(Follow.followed_id != self.id).all() ]
+
+        @property
+        def all_followers(self):
+            return [ f.follower for f in self.followers.filter(Follow.follower_id != self.id).all() ]

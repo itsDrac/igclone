@@ -1,0 +1,7 @@
+{% from 'macros/user.html' import user_table %}
+{% extends 'main.html' %}
+{% block main %}        
+<div class="container is-fullhd has-background-white p-2">
+  {{ user_table(users, current_user) }}
+</div>
+{% endblock main %}

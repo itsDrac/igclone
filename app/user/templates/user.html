@@ -8,11 +8,15 @@
     </div>
     <div class="column is-align-self-center is-one-quarter">
       <h3 class="title has-text-centered">{{ user.followers.count() -1 }}</h3>
-      <h5 class="subtitle has-text-centered">Followers</h5>
+      <a href="{{ url_for('user.user_followers', username=user.username) }}">
+        <h5 class="subtitle has-text-centered">Followers</h5>
+      </a>
     </div>
     <div class="column is-align-self-center is-one-quarter">
       <h3 class="title has-text-centered">{{ user.followed.count() -1 }}</h3>
-      <h5 class="subtitle has-text-centered">Following</h5>
+      <a href="{{ url_for('user.user_followed', username=user.username) }}">
+        <h5 class="subtitle has-text-centered">Following</h5>
+      </a>
     </div>
     {% if current_user == user %}
     <div class="column is-align-self-center px-6">
