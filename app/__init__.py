@@ -1,5 +1,6 @@
 from flask import Flask
 from app.extinsions import db, migrate, login_manager, mail, dropzone, csrf
+from app.commands import create_tables
 from app.user import user
 from app.main import main
 from app.post import post
@@ -18,5 +19,7 @@ def create_app():
     app.register_blueprint(user, url_prefix='/user')
     app.register_blueprint(post, url_prefix='/post')
     app.register_blueprint(main)
+
+    app.cli.add_command(create_tables)
 
     return app
