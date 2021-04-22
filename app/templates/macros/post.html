@@ -1,6 +1,20 @@
 {% from 'macros/form.html' import render_form %}
 {% macro render_post(post, comments = None) %}
 <div class="box my-2">
+        <article class="media">
+                <figure class="media-left">
+                        <p class="image is-64x64">
+                        <img class="is-rounded" src="{{ url_for('user.static', filename='images/'+post.user.avatar) }}">
+                        </p>
+                </figure>
+                <div class="media-content">
+                        <div class="content">
+                                <p>
+                                <strong>{{ post.user.username }}</strong>
+                                </p>
+                        </div>
+                </div>
+        </article>
         <div class="swiper-container">
                 <div class="swiper-wrapper">
                         {% for image in post.get_images() %}
