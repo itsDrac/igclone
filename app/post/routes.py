@@ -4,7 +4,7 @@ from app.post import post
 from app.post.forms import PostForm, CommentForm
 from app.post.models import Post, Comment
 from app.helper.pics import save_picture
-from flask import render_template, request, redirect, url_for, jsonify
+from flask import render_template, request, redirect, url_for, jsonify, flash
 from flask_login import current_user, login_required
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -31,6 +31,7 @@ def new():
         p = Post(images=form.images.data, caption=form.caption.data, user=current_user)
         db.session.add(p)
         db.session.commit()
+        flash('New post added', 'success')
         return redirect(url_for('main.home'))
     return render_template('new.html', form=form)
 

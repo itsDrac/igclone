@@ -1,5 +1,5 @@
 from flask import Flask
-from app.extinsions import db, migrate, login_manager, mail, dropzone
+from app.extinsions import db, migrate, login_manager, mail, dropzone, csrf
 from app.commands import create_tables
 from app.user import user
 #from app.user.models import User
@@ -16,7 +16,7 @@ def create_app():
     login_manager.init_app(app)
     mail.init_app(app)
     dropzone.init_app(app)
-    #csrf.init_app(app)
+    csrf.init_app(app)
 #    wa.whoosh_index(app, User)
 
     app.register_blueprint(user, url_prefix='/user')

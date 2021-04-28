@@ -5,7 +5,7 @@ from app.user.models import User
 from app.user.forms import SignupForm, LoginForm, ResetForm, PasswordResetForm, SettingForm
 from app.helper.mail import send_email
 from app.helper.pics import save_picture
-from flask import render_template, redirect, url_for
+from flask import render_template, redirect, url_for, flash
 from flask_login import login_user, logout_user, current_user, login_required
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -24,8 +24,10 @@ def un_follow(username):
     user=User.query.filter_by(username = username).first_or_404()
     if current_user.is_following(user):
         current_user.unfollow(user)
+        flash(f'You have unfollowed {user.username}', 'info')
     else :
         current_user.follow(user)
+        flash(f'You have followed {user.username}', 'info')
     db.session.commit()
     return redirect(url_for('user.home', username = user.username))
 
@@ -52,6 +54,7 @@ def setting():
              f=form.avatar.data
              name = save_picture(f, os.path.join(basedir, 'static/images'))
              current_user.avatar = name
+        flash(f'Your details have been changed', 'info')
         db.session.commit()
         return redirect(url_for('user.home', username=current_user.username))
     form.username.data = current_user.username
@@ -71,6 +74,7 @@ def signup():
         user.self_follow
         db.session.commit()
         login_user(user, remember=True)
+        flash(f'Account has been created for { user.username } please confirm your e-mail', 'success')
         return redirect(url_for('user.confirm'))
     return render_template('signup.html', form=form)
 
@@ -83,6 +87,7 @@ def login():
         user = User.query.filter_by(email=form.email.data).first_or_404()
         if user and user.check_password(form.password.data) :
             login_user(user, remember=True)
+            flash(f'You are logged in', 'success')
             return redirect(url_for('main.home'))
     return render_template('login.html', form=form)
 

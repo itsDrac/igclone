@@ -13,14 +13,21 @@ const like_unlike = (post_id, button) => {
 }
 
 const comment = (post_id, button) => {
-        console.log(post_id, button)
         body = document.getElementById('comment '+post_id).value
-        console.log(body)
         const xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = () => {
         };
         const url = `comment/${post_id}?comment=${body}`
-        console.log(url)
         xhttp.open('GET', url, true);
         xhttp.send()
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+    const $notification = $delete.parentNode;
+
+    $delete.addEventListener('click', () => {
+      $notification.parentNode.removeChild($notification);
+    });
+  });
+});
