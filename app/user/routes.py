@@ -14,14 +14,14 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 def home(username):
     if not current_user.is_authenticated:
         return redirect(url_for('main.home'))
-    user=User.query.filter_by(username = username).first()
+    user=User.query.filter_by(username = username).first_or_404()
     return render_template('user.html', user=user)
 
 @user.route('un_follow/<username>')
 def un_follow(username):
     if not current_user.is_authenticated:
         return redirect(url_for('main.home'))
-    user=User.query.filter_by(username = username).first()
+    user=User.query.filter_by(username = username).first_or_404()
     if current_user.is_following(user):
         current_user.unfollow(user)
     else :
@@ -31,12 +31,12 @@ def un_follow(username):
 
 @user.route('<username>/followers')
 def user_followers(username):
-    user = User.query.filter_by(username=username).first()
-    return render_template('show_users.html', users = user.all_followed)
+    user = User.query.filter_by(username=username).first_or_404()
+    return render_template('show_users.html', users = user.all_followers)
 
 @user.route('<username>/followed')
 def user_followed(username):
-    user = User.query.filter_by(username=username).first()
+    user = User.query.filter_by(username=username).first_or_404()
     return render_template('show_users.html', users = user.all_followed)
 
 @user.route('/setting', methods=['GET', 'POST'])
@@ -79,7 +79,7 @@ def login():
         return 'you need to logout to access this page'
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
+        user = User.query.filter_by(email=form.email.data).first_or_404()
         if user and user.check_password(form.password.data) :
             login_user(user)
             return redirect(url_for('main.home'))
@@ -112,7 +112,7 @@ def confirmation(token):
     if user:
         user.is_confirmed = True
         db.session.commit()
-        return 'user confirmed'
+        return f'<h1>{user.username}your email has been confirmed now you can post images</h1>'
     return "<h1>There has been some issue please try again</h1>"
 
 @user.route('/reset', methods=['GET', 'POST'])

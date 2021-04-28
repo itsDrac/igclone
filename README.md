@@ -7,6 +7,11 @@ This project is an example for instagrame clone using **Flask** in **Python**
 </p>
 
 ---
+## Todo
+1. Add Fulltext Search using `flask_whooshalchemy`
+**Error :** `/venv/lib/python3.8/site-packages/flask_whooshalchemy.py`
+`NameError: name 'unicode' is not defined`
+---
 ### Before running
 before running project there are some `env` variable you need to set
 

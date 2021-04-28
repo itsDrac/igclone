@@ -11,7 +11,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 @post.route('/<int:post_id>', methods = ['GET', 'POST'])
 def home(post_id):
-    post = Post.query.filter_by(id=post_id).first()
+    post = Post.query.filter_by(id=post_id).first_or_404()
     form = CommentForm()
     if form.validate_on_submit() and current_user.is_authenticated:
         if current_user not in [ comment.user for comment in post.comments.all() ]:
@@ -24,6 +24,8 @@ def home(post_id):
 @post.route('/new', methods = ['GET', 'POST'])
 @login_required
 def new():
+    if not current_user.is_authenticated and not current_user.is_confirmed:
+        return redirect(url_for('main.home'))
     form = PostForm()
     if form.validate_on_submit():
         p = Post(images=form.images.data, caption=form.caption.data, user=current_user)
