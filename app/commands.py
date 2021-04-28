@@ -9,5 +9,5 @@ def create_tables():
 
 @click.command(name="drop_db")
 @with_appcontext
-def create_tables():
+def delete_tables():
     db.drop_all()

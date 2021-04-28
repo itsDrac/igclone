@@ -1,6 +1,6 @@
 from flask import Flask
 from app.extinsions import db, migrate, login_manager, mail, dropzone, csrf
-from app.commands import create_tables
+from app.commands import create_tables, delete_tables
 from app.user import user
 #from app.user.models import User
 from app.main import main
@@ -24,5 +24,6 @@ def create_app():
     app.register_blueprint(main)
 
     app.cli.add_command(create_tables)
+    app.cli.add_command(delete_tables)
 
     return app
