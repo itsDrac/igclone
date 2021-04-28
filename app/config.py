@@ -1,7 +1,7 @@
 from secrets import token_hex
 import os
 
-SECRET_KEY = token_hex(16)
+SECRET_KEY = os.environ.get('SECRET_KEY') or token_hex(16)
 SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:////'+ os.path.abspath(os.getcwd()) + '/Database/database.db'
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 MAIL_SERVER= 'smtp.googlemail.com'
