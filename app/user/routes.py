@@ -70,6 +70,7 @@ def signup():
         db.session.add(user)
         user.self_follow
         db.session.commit()
+        login_user(user, remember=True)
         return redirect(url_for('user.confirm'))
     return render_template('signup.html', form=form)
 
@@ -81,7 +82,7 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first_or_404()
         if user and user.check_password(form.password.data) :
-            login_user(user)
+            login_user(user, remember=True)
             return redirect(url_for('main.home'))
     return render_template('login.html', form=form)
 
