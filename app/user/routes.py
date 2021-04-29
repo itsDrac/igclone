@@ -42,8 +42,10 @@ def user_followed(username):
     return render_template('show_users.html', users = user.all_followed)
 
 @user.route('/setting', methods=['GET', 'POST'])
+@login_required
 def setting():
-    if not current_user.is_authenticated and not current_user.is_confirmed:
+    if not current_user.is_confirmed:
+        flash("What did you use fake e-mail? Lamo now forget this account and create new one", "link")
         return redirect(url_for('main.home'))
     form = SettingForm()
     if form.validate_on_submit():
