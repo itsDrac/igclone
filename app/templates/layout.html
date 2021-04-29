@@ -17,7 +17,9 @@
             {% for category, message in messages %}
             <div class="notification is-{{category}}">
               <button class="delete"></button>
-                {{ message }}
+              <p class="has-text-centered">
+              {{ message | safe}}
+              </p>
             </div>
             {% endfor %}
         </ul>

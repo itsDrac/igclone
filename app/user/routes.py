@@ -49,12 +49,14 @@ def setting():
     if form.validate_on_submit():
         current_user.name = form.name.data
         current_user.username = form.username.data
-        current_user.email = form.email.data
+        if not current_user.email == form.email.data :
+            current_user.email = form.email.data
+            current_user.is_confirmed = False
         if form.avatar.data :
              f=form.avatar.data
              name = save_picture(f, os.path.join(basedir, 'static/images'))
              current_user.avatar = name
-        flash(f'Your details have been changed', 'info')
+        flash(f'Your details have been changed', 'success')
         db.session.commit()
         return redirect(url_for('user.home', username=current_user.username))
     form.username.data = current_user.username
@@ -87,7 +89,6 @@ def login():
         user = User.query.filter_by(email=form.email.data).first_or_404()
         if user and user.check_password(form.password.data) :
             login_user(user, remember=True)
-            flash(f'You are logged in', 'success')
             return redirect(url_for('main.home'))
     return render_template('login.html', form=form)
 
@@ -100,31 +101,37 @@ def logout():
 @login_required
 def confirm():
     if current_user.is_confirmed:
-        return 'you are already confirmed'
+        flash("You are already confirm", "info")
+        return redirect(url_for('main.home'))
     token = current_user.get_serializer_token(salt='e-mail confirmation')
     send_email(subject = 'e-mail confirmation',
                to = current_user.email,
                text_body = 'if you are getting this it means you are unable to see html page please contact admin',
                template = 'confirm',
                token = token)
-    return '<h1>An confirmation mail has been send to e-mail. Check your inbox</h1>'
+    flash(f'An confirmation e-mail has been send to {current_user.email}, Please confirm E-Mail', 'info')
+    return redirect(url_for('main.home'))
 
 @user.route('/confirm/<token>')
 @login_required
 def confirmation(token):
     if current_user.is_confirmed:
-        return 'you are already confirmed'
+        flash("You are already confirm", "info")
+        return redirect(url_for('main.home'))
     user = User.verify_serializer_token(token, salt='e-mail confirmation')
     if user:
         user.is_confirmed = True
         db.session.commit()
-        return f'<h1>{user.username}your email has been confirmed now you can post images</h1>'
-    return "<h1>There has been some issue please try again</h1>"
+        flash(f'{user.username} Your email has been confirmed', 'success')
+    else :
+        flash(f"Couldn't confirm your email <a href={ url_for('user.confirm') }><b>try again</b></a>. We apologize for the inconvenience", 'danger')
+    return redirect(url_for('main.home'))
 
 @user.route('/reset', methods=['GET', 'POST'])
 def reset():
     if current_user.is_authenticated:
-        return 'you need to logout to access this page'
+        flash("You need to logout to access this page", "warning")
+        return redirect(url_for('main.home'))
     form = ResetForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first_or_404()
@@ -135,21 +142,26 @@ def reset():
                        text_body = 'if you are getting this it means you are unable to see html page please contact admin',
                        template = 'reset',
                        token = token)
-            return '<h1>Mail has been send. Check your inbox</h1>'
+            flash(f"A mail has been sent to {user.email} with reset information", "info")
+            return redirect(url_for('user.login'))
     return render_template('reset.html', form=form)
 
 @user.route('reset/<token>', methods=['GET', 'POST'])
 def reset_request(token):
     if current_user.is_authenticated:
-        return 'you need to logout to access this page'
+        flash("You need to logout to access this page", "warning")
+        return redirect(url_for('main.home'))
     form = PasswordResetForm()
     user = User.verify_serializer_token(token, salt='password reset')
     if user:
         if form.validate_on_submit():
             user.set_password(form.password.data)
             db.session.commit()
+            flash("password has been reset. Login with new password", "success")
             return redirect(url_for('user.login'))
         return render_template('password_reset.html', form=form)
     else :
+        flash("Error in reseting password try again", "danger")
         return redirect(url_for('user.reset'))
-    return "password Reset Request"
+    flash("Password Reset mail has been send check your inbox", "info")
+    return redirect(url_for('user.login'))
