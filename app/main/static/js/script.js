@@ -8,7 +8,7 @@ const like_unlike = (post_id, button) => {
                         button.classList.replace('is-danger','is-dark')
                 }
         };
-        xhttp.open('GET', `like-unlike/${post_id}`, true);
+        xhttp.open('GET', `${window.location.origin}/like-unlike/${post_id}`, true);
         xhttp.send()
 }
 

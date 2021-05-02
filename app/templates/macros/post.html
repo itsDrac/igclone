@@ -2,10 +2,8 @@
 {% macro render_post(post, comments = None) %}
 <div class="box my-2">
         <article class="media">
-                <figure class="media-left">
-                        <p class="image is-64x64">
+                <figure class="media-left image is-64x64">
                         <img class="is-rounded" src="{{ url_for('user.static', filename='images/'+post.user.avatar) }}">
-                        </p>
                 </figure>
                 <div class="media-content">
                         <div class="content">
@@ -14,6 +12,13 @@
                                 </p>
                         </div>
                 </div>
+                {% if post.user == current_user %}
+                <figure class="media-left image is-64x64">
+                        <a href="{{ url_for('post.delete', post_id=post.id) }}" class="has-text-grey-darker">
+                                <i class="fas fa-trash"></i>
+                        </a>
+                </figure>
+                {% endif %}
         </article>
         <div class="swiper-container">
                 <div class="swiper-wrapper">

@@ -45,7 +45,7 @@ def user_followed(username):
 @login_required
 def setting():
     if not current_user.is_confirmed:
-        flash("What did you use fake e-mail? Lamo now forget this account and create new one", "link")
+        flash("What did you use fake e-mail? Lmao now forget this account and create new one", "link")
         return redirect(url_for('main.home'))
     form = SettingForm()
     if form.validate_on_submit():

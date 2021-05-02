@@ -24,7 +24,8 @@ def home(post_id):
 @post.route('/new', methods = ['GET', 'POST'])
 @login_required
 def new():
-    if not current_user.is_authenticated and not current_user.is_confirmed:
+    if not (current_user.is_authenticated and current_user.is_confirmed):
+        flash('Go and confirm your email, Baka', 'link')
         return redirect(url_for('main.home'))
     form = PostForm()
     if form.validate_on_submit():
@@ -44,3 +45,19 @@ def upload_image():
                 name = save_picture(f, os.path.join(basedir, 'static/images'))
                 names.append(name)
         return jsonify(images = str(names))
+
+@post.route('delete/<int:post_id>')
+@login_required
+def delete(post_id):
+    post = Post.query.filter_by(id=post_id).first_or_404()
+    if not post.user == current_user:
+        flash('What are you trying to do?', 'danger')
+        return redirect(url_for('main.home'))
+    comments = post.comments.all()
+    for comment in post.comments.all():
+        db.session.delete(comment)
+    db.session.delete(post)
+    db.session.commit()
+    flash('Post Deleted, I am sure you have your reasons', 'dark')
+    return redirect(url_for('main.home'))
+    
