@@ -14,7 +14,6 @@ class Follow(db.Model):
     follower_id = db.Column('follower_id', db.Integer, db.ForeignKey('user.id'), primary_key=True)
 
 class User(db.Model, UserMixin):
-        __searchable__ = ['name','username']
 
         id = db.Column(db.Integer, primary_key=True)
         name = db.Column(db.String(50), nullable=False)
