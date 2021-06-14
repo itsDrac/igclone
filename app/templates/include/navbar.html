@@ -10,16 +10,12 @@
                                         </a>
                                 </div>
                                 <div class="level-item ml-6">
-                                        <div class="field has-addons">
-                                                <p class="control">
-                                                <input class="input" type="text" placeholder="Find a post">
-                                                </p>
-                                                <p class="control">
-                                                <button class="button">
-                                                        Search
-                                                </button>
-                                                </p>
-                                        </div>
+                                        <form action="{{ url_for('main.home') }}">
+                                            <div class="field has-addons">
+                                                <input class="input" type="text" placeholder="Search for users" name="search">
+                                                <input type="submit" class="button" value="Search">
+                                            </div>
+                                        </form>
                                 </div>
                         </div>
 

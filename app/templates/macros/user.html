@@ -1,7 +1,8 @@
 {% macro user_table(users, current_user) %}
 
 {% for user in users %}
-<div class="columns box">
+{% if not user == current_user %}
+<div class="columns box my-2">
     <div class="column is-one-fifth">
         <div class="image is-64x64" style="margin: 0 auto">
             <img class="is-rounded is-1by1" src="{{ url_for('user.static', filename='images/'+user.avatar) }}">
@@ -25,6 +26,7 @@
         </a>
     </div>
 </div>
+{% endif %}
 {% endfor %}
 
 {% endmacro %}
